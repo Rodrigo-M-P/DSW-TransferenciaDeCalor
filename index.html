@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heat Generation and Conduction Through Composite Walls</title>
+
+  <!-- Before we run any other scripts, we have to import P5.js (a library for graphics) -->
+  <script src="./libraries/p5.js"></script>
+
+  <!-- Nex, include some metadata for search engines. -->
+  <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+  <meta name="keywords" content="LearnChemE, chemical engineering, engineering, simulation">
+  <meta name="author" content="Alex Jimenez">
+  <meta name="application-name" content="LearnChemE simulation template">
+  <meta name="description" content="An interactive simulation to help young programmers learn to make simulations.">
+
+  <!-- Finally, import the css files. "Sliders" doesn't need to be edited/changed, it just makes the sliders appear a bit prettier. You will want to make all your CSS changes in the style.css file. -->
+  <link href="./sliders.css" rel="stylesheet">
+  <link href="./style.css" rel="stylesheet">
+  <link href="./bootstrap.min.css" rel="stylesheet">
+
+  <script>
+    MathJax = {
+      chtml: {
+        scale: 0.95,
+        mathmlSpacing: true, // true for MathML spacing rules, false for TeX rules
+        displayAlign: 'left', // default for indentalign when set to 'auto'
+      }
+    };
+  </script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="./jquery.js"></script>
+  <script src="./popper.js"></script>
+  <script src="./bootstrap.min.js"></script>
+</head>
+
+
+<body>
+
+  <!-- I highly recommend looking through the style.css file while you are reading through this HTML. Class attributes E.G. class="class-name" are referenced in the style.css with a period, so .class-name { properties: x; }. ID attributes E.G. id="id-name" are referenced in the style.css file with an octothorpe #, so #id-name { properties: x; }. Generally, you want to use a specific id if there is only one of that element, and class attributes to apply styles to multiple elements. An element can have both an id and classes. You can also have multiple classes delimited via a space E.G. class="class-1 class-2 class-3" or something. But each element can only have one id. There are 3 elements with the class ".input-row", and so we can style all 3 at the same time using the class attribute. The nice thing about the id attribute is that it's easy to access that specific element via JavaScript, using the "getElementById()" function. -->
+
+  <!-- Generally, you want to use wrappers for just about everything because it makes styling things a lot easier. CSS is a bit nuanced and takes some practice, so CSS will probably be your lowest priority. I'll help you out with that, though. -->
+  <div id="simulation-wrapper">
+
+    <!-- First, we declare our inputs. The first one has an id "range-1", and you will see that referenced in the index.js file. -->
+    <div class="inputs-wrapper">
+      <!-- The attributes are self-explanatory. For more info on "ranges", just google "JavaScript input range" -->
+      <div class="input-row">
+        <div class="input-label">Heat generation rate </div>
+        <input type="range" id="heat-gen-rate" min="4" max="6" value="4" step=".1" />
+        <div id="heat-gen-rate-value" class="value-label">4</div>
+        <div class="units-label">kW/m<sup>3</sup></div>
+      </div>
+
+     
+
+      <div class="input-row">
+        <div class="input-label">Contact resistance</div>
+        <input type="range" id="contact-resistance" min="0" max="0.08" value="0" step=".01" />
+        <div id="contact-resistance-value" class="value-label">0</div>
+        <div class="units-label">[m<sup>2</sup> K]/W</div>
+      </div>
+
+      <!-- This is a drop-down menu. "#select-1" is also referenced in index.js. -->
+      <div class="select-row">
+        <div class="heatgen-wall">Wall with uniform generation</div>
+        <select id="heatgen-wall">
+          <option value="A">A</option>
+          <option value="B">B</option>
+    
+        </select>
+      </div>
+
+      <div id="modal-buttons">
+        <div id="dir" class="btn btn-primary" data-toggle="modal" data-target="#directionsModal">Directions</div>
+        <div id="detail" class="btn btn-primary" data-toggle="modal" data-target="#detailsModal">Details</div>
+        <div id="about" class="btn btn-primary" data-toggle="modal" data-target="#aboutModal">About</div>
+      </div>
+    </div>
+
+    <!-- The canvas will be assigned to the following element. So for now it is empty, but you will notice that the HTML on the actual web page has a canvas inside this element. -->
+    <div id="graphics-wrapper">
+
+    </div>
+  </div>
+
+  <div class="modal fade" id="directionsModal" tabindex="-1" role="dialog" aria-labelledby="directionsModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="directionsModalLabel">Directions</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+           Temperature profiles are calculated through three walls in series with a contact resistance (selected with a slider) between each pair of walls. Heat is generated at a constant rate in either wall A or B (selected with the dropdown menu), and a slider selects the rate of heat generations. The left side of wall A is insulated, and heat is transferred from the right side of wall C to flowing air, which is at 20°C. The distance between walls is exaggerated in the figure so the temperature profile is more easily seen.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="detailsModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="detailsModalLabel">Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div class="modal-text">
+            The heat flux \(q \) from the wall with uniform generation is to the right and is:
+            </div>
+            
+            <div class="modal-equation">
+              $$
+              q = QL_i
+              $$
+            </div>
+            
+            <div class="modal-text">
+            where \(q \) is in \(W/m^2 \), \(Q \) is the volumetric heat generation rate in \( W/m^3 \), and \(L_i \) is the thickness of the wall with uniform generation (either A or B) in \(m \).
+            </div>
+            
+            <div class="modal-text">
+            A thermal circuit is modeled from the right side of the wall with generation to the air with forced convection. If wall A generates heat, then the heat flux is:
+            </div>
+            
+            <div class="modal-equation">
+              $$
+              q = \frac{T_{s,1}\ – \ T_∞}{1/h} = \frac{T_{s,2} \ – \ T_{s,3}}{L_C/k_C} = \frac{T_{s,3} \ – \ T_{s,2}}{R_{tc}} = \frac{T_{s,4} \ – \ T_{s,3}}{L_B/k_B} = \frac{T_{s,5} \ – \ T_{s,4}}{R_{tc}}
+              $$
+            </div> 
+            
+            <div class="modal-text">
+            where \(R_{tc} \) is the contact resistance (\([m^2 \ K]/W \)), \(T_{s,1} \) is the temperature on the right surface of wall C and \(T_{s,5} \) is the temperature on right side of wall A (°C). However, if wall B generates heat, then the thermal circuit can only be used to solve up to \(T_{s,3} \), the temperature on the right side of wall B.
+            </div>
+            
+            <div class="modal-text">
+            The temperature profile for heat generation in either wall A  or B  is calculating using: 
+            </div>
+            
+            <div class="modal-equation">
+              $$
+              \frac{d^2T}{dx^2} = -\frac{Q}{k_i}
+              $$
+            </div>
+            
+            <div class="modal-text">
+            where \(k_i \) is the thermal conductivity of the wall generating heat.
+            </div>
+            
+            <div class="modal-text">
+            The boundary conditions are:
+            </div>
+            
+            <div class="modal-equation no-padding">
+              $$
+              \frac{dT}{dx} = 0
+              $$
+            </div>
+            
+            <div class="modal-equation no-padding">
+              $$
+              T(L_i) = T_{s, \ right \ side \ of \ wall}
+              $$
+            </div>
+            
+            <div class ="modal-text">
+            The left side \((L_i = 0 \)) is well insulated so the flux is zero. The temperature of the right side of the wall with generation is determined from the thermal circuit.
+            </div>
+            <div class="modal-text">
+              References:
+            </div>
+            <ol class="references">
+              <li>
+                T. L. Bergman, A. S. Lavine, F. P. Incropera and D. P. DeWitt, <i>Introduction to Heat Transfer</i>, 6th ed., Hoboken: John Wiley and Sons, 2011.
+              </li>
+            
+          <div style="height: 30px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="aboutModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="aboutModalLabel">About</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            This simulation was created in the <a href="https://www.colorado.edu/chbe" target="_blank">Department of
+              Chemical and Biological Engineering</a>, at University of Colorado Boulder for <a
+              href="http://www.learncheme.com" target="_blank">LearnChemE.com</a> by Adam J. Johnston under the direction of
+            Professor John L. Falconer and was converted to HTML5 by Patrick Doyle, with additional contributions by Neil Hendren. Address any questions or comments to learncheme@gmail.com. All of our
+            simulations are open source, and are available on our <a
+              href="https://github.com/LearnChemE/LearnChemE.github.io/" target="_blank">LearnChemE Github
+              repository</a>.</p>
+          <p style="line-height: 3rem;">
+            If this simulation is too big for your screen, zoom out using&nbsp;<span><img
+                src="https://learncheme.github.io/media/command.png" style="height: 4ch;"></span>&nbsp;+&nbsp;<span><img
+                src="https://learncheme.github.io/media/minus.png" style="height: 4ch;"></span>&nbsp;on Mac
+            or&nbsp;<span><img src="https://learncheme.github.io/media/ctrl.png"
+                style="height: 4ch;"></span>&nbsp;+&nbsp;<span><img src="https://learncheme.github.io/media/minus.png"
+                style="height: 4ch;"></span>&nbsp;on Windows. To zoom in, use&nbsp;<span><img
+                src="https://learncheme.github.io/media/command.png" style="height: 4ch;"></span>&nbsp;+&nbsp;<span><img
+                src="https://learncheme.github.io/media/plus.png" style="height: 4ch;"></span>&nbsp;on Mac
+            or&nbsp;<span><img src="https://learncheme.github.io/media/ctrl.png"
+                style="height: 4ch;"></span>&nbsp;+&nbsp;<span><img src="https://learncheme.github.io/media/plus.png"
+                style="height: 4ch;"></span>&nbsp;on Windows.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="index.js"></script>
+</body>
+
+</html>
