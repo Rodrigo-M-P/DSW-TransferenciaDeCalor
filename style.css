@@ -1,0 +1,57 @@
+/* tipo de letra para todo el documento */
+:root {
+  font-family: Tahoma, Arial, sans-serif;
+  font-size: 16px;
+}
+
+/* Octothorpes (#) refer to an ID of an element, like <div id="simulation-title"></div>*/
+
+
+#cuadroDeSimulacion { /* engloba lo que seria la simulacion per se */
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100vw; /* recuerda que vh y vw es viewport height y width resp */
+  height: calc(100vh - 100px);  /* Se usa delta vh-px para que se ajuste a la altura del viewport*/
+}
+
+.input-frame {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  justify-content: center;
+  gap: 30px 30px;
+  margin-top: 20px;
+}
+
+.input-row {
+  display: grid;
+  grid-template-columns: max-content 150px 15px max-content;
+  gap: 10px;
+  align-items: end;
+  justify-items: center;
+  height: 15px;
+}
+
+.select-row {
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+  gap: 10px;
+  align-items: center;
+}
+
+select {
+  padding: 2px 5px;
+  width: 60px;
+  text-align: center;
+}
+
+#graphics-frame {
+  position: absolute;
+  top: 135px;
+  width: 100vw;
+  height: max-content;
+  display: grid;
+  justify-content: center;
+}
+
+}

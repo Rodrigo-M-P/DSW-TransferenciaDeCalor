@@ -1,0 +1,190 @@
+
+<!-- Acceder desde repositorio GIT, libreria y archivos ahi https://github.com/Rodrigo-M-P/DSW-HeatTransfer -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conduccion de calor</title>
+
+  <!-- Libreria de graficos -->
+  <script src="./libraries/p5.js"></script>
+  <!-- Hoja de CSS para que se vea organizado -->
+  <link href="./style.css" rel="stylesheet">
+
+  <!-- Metadatos -->
+  <meta name="author" content="Rodrigo Moreno">
+  <meta name="application-name" content="DSW proyecto final">
+  <meta name="description" content="Conducción de calor, proyecto final, Desarrollo de Sistemas Web">
+
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script> <!-- Para que se vean las ecuaciones mas decentes-->
+</head>
+
+
+<body>
+  <div id="cuadroDeSimulacion">
+    <div class="input-frame ">
+      <div class="input-row">
+        <div>Rate of Heat Generation</div>
+        <input type="range" id="heatRate" min="0" max="9" value="0" step=".1" />
+        <div id="heatRate-value">0</div>
+        <div>kW/m<sup>3</sup></div>
+      </div>
+
+    
+
+      <div class="input-row">
+        <div class="input-label">Contact resistance</div>
+        <input type="range" id="contact-resistance" min="0" max="0.08" value="0" step=".01" />
+        <div id="contact-resistance-value">0</div>
+        <div>[m<sup>2</sup> K]/W</div>
+      </div>
+    </div>
+
+    <!-- Aqui se pone la simulacion, sin esto no aparece -->
+    <div id="graphics-frame">
+
+    </div>
+  </div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br><br>
+<br>
+<br><br>
+<br>
+<br><br>
+<br>
+<br><br>
+<br>
+<br><br>
+<br>
+<br><br>
+<br>
+<br><br>
+<br>
+<br><br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+        <div>
+          <p>
+            Los perfiles de temperatura se calculan en tres paredes en serie con una resistencia de contacto (seleccionada con un control deslizante) entre cada par de paredes. El calor se genera a una tasa constante en la pared A o B (seleccionada con el menú desplegable), y un control deslizante selecciona la tasa de generación de calor. El lado izquierdo de la pared A está aislado y el calor se transfiere desde el lado derecho de la pared C al aire circulante, que está a una temperatura de 15°C. La distancia entre las paredes está exagerada en la figura para que el perfil de temperatura sea más fácilmente visible.
+          </p>
+        </div>
+
+
+<br>
+<br>
+<br>
+
+
+          <div>
+            El flujo de calor \(q \) a partir de la pared A, se define como:
+            </div>
+            
+            <div>
+              $$
+              q = QL_i
+              $$
+            </div>
+            
+            <div>
+            donde \(q \) se mide en \(W/m^2 \), \(Q \) es la tasa de generación de calor por unidad de volumen en la pared A medido en \( W/m^3 \), y \(L_i \) es el grosor de la pared A que genera calor de manera uniforme medido en \(m\).
+            </div>
+            
+            <div>
+<br>
+            El modelo analizado es el de un circuito térmico en el cual el calor fluye de izquierda a derecha, de la pared A a la pared C, el flujo de energía térmica se define como:
+            </div>
+            
+            <div>
+              $$
+              q_{n}  = \frac{T_{s,1}\ – \ T_∞}{1/h} = \frac{T_{s,2} \ – \ T_{s,3}}{L_C/k_C} = \frac{T_{s,3} \ – \ T_{s,2}}{R_{tc}} = \frac{T_{s,4} \ – \ T_{s,3}}{L_B/k_B} = \frac{T_{s,5} \ – \ T_{s,4}}{R_{tc}}
+              $$
+            </div> 
+            
+            <div>
+            donde \(R_{tc} \) es al resistencia de contacto entre parededes, (\([m^2 \ K]/W \)), \(T_{s,n} \) son las temperaturas en dl sistema analizado dividido en cinco segmentos e iniciando el conteo a partir del extremo derecho de la pared C, seguiod por el extremo izquierdo de C, el extremo derecho de B, el extremo izquierdo de B, el extremo derecho de A y el extremo izquierdo de A en (°C). 
+            </div>
+            <div>
+              <br>
+            \(k_{A} \), \(k_{B} \) y \(k_{C} \) representan las constantes de conductividad calorifica de sus respectivas paredes
+            </div>
+            
+            <div>
+              <br>
+            El gradiente de temperatura para la generación de calor en la pared A se clcula:
+            </div>
+            
+            <div>
+              $$
+              \frac{d^2T}{dx^2} = -\frac{Q}{k_i}
+              $$
+            </div>
+            
+            <div>
+            siendo \(k_i \) la constante de conductividad térmica de la pared A, la cual genera calor.
+            </div>
+            
+            <div>
+            En el contorno se encuentran las siguientes condiciones:
+            </div>
+            
+            <div>
+              $$
+              \frac{dT}{dx} = 0
+              $$
+            </div>
+            
+            <div>
+              $$
+              T(L_i) = T_{s, \ lado \ derecho \ de \ la \ pared}
+              $$
+            </div>
+            
+            <div>
+              El lado izquiero de la pared A se encuentra aislado, por esta razon no tiene un flujo, id est, el flujo es igual a cero.
+            </div>
+            <div>
+              <br>
+              References:
+            </div>
+
+            <ol>
+              <li>
+                T. L. Bergman, A. S. Lavine, F. P. Incropera and D. P. DeWitt, <i>Introduction to Heat Transfer</i>, 6th ed., Hoboken: John Wiley and Sons, 2011.
+                Capitulo dos y tres.
+              </li>
+            
+   
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+  <script src="calculosThermo.js"></script>
+
+</body>
+
+</html>
