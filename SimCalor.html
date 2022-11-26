@@ -15,10 +15,6 @@
   <!-- Hoja de CSS para que se vea organizado -->
   <link href="./style.css" rel="stylesheet">
 
-  <!-- Metadatos -->
-  <meta name="author" content="Rodrigo Moreno">
-  <meta name="application-name" content="DSW proyecto final">
-  <meta name="description" content="Conducción de calor, proyecto final, Desarrollo de Sistemas Web">
 
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script> <!-- Para que se vean las ecuaciones mas decentes-->
 </head>
@@ -86,7 +82,7 @@
 <br>
         <div>
           <p>
-            Los perfiles de temperatura se calculan en tres paredes en serie con una resistencia de contacto (seleccionada con un control deslizante) entre cada par de paredes. El calor se genera a una tasa constante en la pared A o B (seleccionada con el menú desplegable), y un control deslizante selecciona la tasa de generación de calor. El lado izquierdo de la pared A está aislado y el calor se transfiere desde el lado derecho de la pared C al aire circulante, que está a una temperatura de 15°C. La distancia entre las paredes está exagerada en la figura para que el perfil de temperatura sea más fácilmente visible.
+            Los perfiles de temperatura se calculan en tres paredes en serie con una resistencia de contacto (seleccionada con un control deslizante) entre cada par de paredes. El calor se genera a una tasa constante en la pared A o B (seleccionada con el menú desplegable), y un control deslizante selecciona la tasa de generación de calor. El lado izquierdo de la pared A está aislado y el calor se transfiere desde el lado derecho de la pared C al aire circulante, que está a una temperatura de 12°C. La distancia entre las paredes está exagerada en la figura para que el perfil de temperatura sea más fácilmente visible.
           </p>
         </div>
 
@@ -117,7 +113,7 @@
             
             <div>
               $$
-              q_{n}  = \frac{T_{s,1}\ – \ T_∞}{1/h} = \frac{T_{s,2} \ – \ T_{s,3}}{L_C/k_C} = \frac{T_{s,3} \ – \ T_{s,2}}{R_{tc}} = \frac{T_{s,4} \ – \ T_{s,3}}{L_B/k_B} = \frac{T_{s,5} \ – \ T_{s,4}}{R_{tc}}
+              q_{n}  = \frac{T_{s,1}\ – \ T_{atm}}{1/h} = \frac{T_{s,2} \ – \ T_{s,3}}{L_C/k_C} = \frac{T_{s,3} \ – \ T_{s,2}}{R_{tc}} = \frac{T_{s,4} \ – \ T_{s,3}}{L_B/k_B} = \frac{T_{s,5} \ – \ T_{s,4}}{R_{tc}}
               $$
             </div> 
             
